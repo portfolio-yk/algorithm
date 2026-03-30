@@ -1,6 +1,1 @@
-for(int i = 0; i < N; i++) {
-    //     for(int j = 0; j < N; j++) {
-    //         cout << graph[i][j] << " ";
-    //     }
-    //     cout << "\n";
-    // }
+3 1 7 2 5 4 6
