@@ -34,7 +34,7 @@ int main() {
         //확산
         for(int i = 0; i < R; i++) {
             for(int j = 0; j < C; j++) {
-                if(board[i][j] != 0 && board[i][j] != -1) {
+                if(board[i][j] != -1) {
                     board_back[i][j] = board[i][j] / 5;
                 }
             }

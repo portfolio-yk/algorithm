@@ -12,7 +12,7 @@ void dfs(int start_x, int start_y, int end_x, int end_y) {
 
     if(board[start_x][start_y] == 1) return; 
 
-    if(start_x == end_x + 1) {
+    if(start_x == end_x + 1 && start_y == end_y + 1) {
         if(board[start_x - 1][start_y] == 1 || board[start_x][start_y - 1] == 1) {
             //cout << start_x << " " << start_y << " " << end_x << " " << end_y << "\n";
             return;
@@ -39,7 +39,7 @@ void dfs(int start_x, int start_y, int end_x, int end_y) {
         dfs(start_x + 1, start_y + 1, end_x + 1, end_y);
     }
     //대각선 && start_y == end_y + 1
-    else if(start_x == end_x + 1) {
+    else if(start_x == end_x + 1 && start_y == end_y + 1) {
         dfs(start_x, start_y + 1, end_x + 1, end_y + 1);
         dfs(start_x + 1, start_y, end_x + 1, end_y + 1);
         dfs(start_x + 1, start_y + 1, end_x + 1, end_y + 1);
