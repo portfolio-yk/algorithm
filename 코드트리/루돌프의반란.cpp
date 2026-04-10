@@ -69,10 +69,14 @@ void push_santa(santa s, int dir, int dist) {
         push_santa(n_s, dir, 1);    
     }
     //이동
-    board[nx][ny] = s.num;
     santa_list[board[s.x][s.y]].x = nx;
     santa_list[board[s.x][s.y]].y = ny;
-    board[s.x][s.y] = 0;
+    if(board[nx][ny] != s.num) {
+        board[s.x][s.y] = 0;
+    }
+    board[nx][ny] = s.num;
+    
+    
 }
 
 void go_rudolf(int dir) {
@@ -104,7 +108,6 @@ santa find_closest_santa() {
                 if(s.is_over == 1) continue;
                 
                 int dist = get_dist(rudolf.x, rudolf.y, s.x, s.y);
-                // cout << "c" << s.num  << " " << dist << "\n";
                 if(min_dist > dist) {
                     min_dist = dist;
                     min_x = s.x;
@@ -113,7 +116,6 @@ santa find_closest_santa() {
             }
         }
     }
-    // cout << "?" << min_x << " " << min_y << "\n";
     return santa_list[board[min_x][min_y]];
 }
 
@@ -127,42 +129,11 @@ int is_all_over() {
     return is_live != 1;
 }
 
-
-int visited[55][55];
-void rudolf_bfs(santa s) {
-    int start_x = rudolf.x;
-    int start_y = rudolf.y;
-    queue<pos> q;
-    q.push({ start_x ,start_y });
-    visited[start_x][start_y] = 1;
-
-    while(q.size()) {
-        pos p = q.front();
-        q.pop();
-        int x = p.x;
-        int y = p.y;
-
-        for(int i = 0; i < 8; i += 2) {
-            int nx = x + dx[i];
-            int ny = y + dy[i];
-
-            if(nx < 0 || nx > N - 1 || ny < 0 || ny > N - 1) continue;
-
-            if(visited[nx][ny] == 0 && board[nx][ny] == 0) {
-                visited[nx][ny] = visited[x][y] + 1;
-                q.push({ nx, ny });
-            }
-        }
-    }
-}
-
 void go_santa() {
     for(int i = 1; i <= P; i++) {
         santa s = santa_list[i];
 
         if(s.is_over == 1 || s.block_turn > current_turn) continue;
-
-        //rudolf_bfs(s);
 
         int min_dist = get_dist(s.x, s.y, rudolf.x, rudolf.y);
         int min_x = s.x;
@@ -190,7 +161,6 @@ void go_santa() {
         if(board[min_x][min_y] == -1) {
             santa_list[i].score += D;
             santa_list[i].block_turn = current_turn + 2;
-            // cout << "d" << dir << " " << min_y << "\n";
             //반대로 튕기기
             push_santa(s, (dir + 4) % 8, D - 1);
         } else {
@@ -219,41 +189,19 @@ int main() {
 
     board[rudolf.x][rudolf.y] = -1;
     
-    // //가장 가까운 산타 찾기
-    // santa s = find_closest_santa();
-    // //가장 가까운 산타와 방향
-    // int dir = get_rudolf_dir(s);
-    // //루돌프 1칸 움직임
-    // go_rudolf(dir);
-    // go_santa();
-    // cout << "\n";
-    // s = find_closest_santa();
-    // cout << s.num << "\n";
-    // //가장 가까운 산타와 방향
-    // dir = get_rudolf_dir(s);
-    // //루돌프 1칸 움직임
-    // go_rudolf(dir);
-    // go_santa();
-    // print_board();
-    // for(int i = 1; i <= P; i++) {
-    //     cout << santa_list[i].score << " ";
-    // }
-
     while(M--) {
         //다 죽음
         if(is_all_over()) break;
         
+        
         //가장 가까운 산타 찾기
         santa s = find_closest_santa();
         //가장 가까운 산타와 방향
-        // cout << "a" <<s.num << "\n";
         int dir = get_rudolf_dir(s);
-        // cout << "b" <<dir << "\n";
         //루돌프 1칸 움직임
         go_rudolf(dir);
         //산타들 움직임
         go_santa();
-        // print_board();
         
         //탈락하지 않은 산타 1점 씩 추가 부여
         for(int i = 1; i <= P; i++) {
@@ -262,7 +210,6 @@ int main() {
             }
         }
         current_turn++;
-        // cout << "\n";
     }
     
     for(int i = 1; i <= P; i++) {
@@ -270,6 +217,3 @@ int main() {
     }
     
 }
-
-//단, 게임에서 탈락하지 않은 산타 중 가장 가까운 산타를 선택해야 합니다.
-// 매 턴 이후 아직 탈락하지 않은 산타들에게는 1점씩을 추가로 부여합니다.

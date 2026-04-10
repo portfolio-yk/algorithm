@@ -234,28 +234,18 @@ int main() {
                 rotate_90(x, y);
             }
         }
-        // cout << max_x << " " << max_y << " " << " " << a << "\n";
+        
         for(int i = 0; i < a / 90; i++) {
             rotate_90(max_x, max_y);
         }
 
         int result = crash();
-        // cout << result << "\n";
-        // print_board();
         fill_board();
-        // cout << "\n";
-        // print_board();
-        // cout << "\n";
         int ans = result;
         while(result) {
             result = crash();
-            // cout << result << "\n";
             ans += result;
-            // print_board();
-            // cout << "\n";
             fill_board();
-            // print_board();
-            // cout << "\n";
         }
 
         if(ans == 0) break;
