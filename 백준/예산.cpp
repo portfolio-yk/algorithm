@@ -33,7 +33,7 @@ int main() {
         exit(0);
     }
 
-    while(left <= right) {
+    while(left <= right) {  
         int mid = (left + right) / 2;
         
         int t = total;
